@@ -1,0 +1,10 @@
+python-dotenv
+huggingface_hub
+datasets==3.6.0
+matplotlib
+tqdm
+numpy
+ipykernel
+jupyter
+pydantic
+transformers
