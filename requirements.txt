@@ -7,4 +7,5 @@ numpy
 ipykernel
 jupyter
 pydantic
+torch
 transformers
