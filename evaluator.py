@@ -7,6 +7,7 @@ from itertools import accumulate
 import math
 from tqdm.notebook import tqdm
 from concurrent.futures import ThreadPoolExecutor
+from IPython.display import clear_output
 
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -124,7 +125,7 @@ class Tester:
         fig.update_xaxes(range=[0, max_val])
         fig.update_yaxes(range=[0, max_val])
         fig.update_layout(showlegend=False)
-        fig.show()
+        fig.show(renderer="colab")
 
     def error_trend_chart(self):
         n = len(self.errors)
@@ -196,21 +197,17 @@ class Tester:
             template="plotly_white",
             showlegend=False,
         )
-
-        fig.show()
+        fig.show(renderer="colab")
 
     def report(self):
         average_error = sum(self.errors) / self.size
         mse = mean_squared_error(self.truths, self.guesses)
         r2 = r2_score(self.truths, self.guesses) * 100
         title = f"{self.title} results<br><b>Error:</b> ${average_error:,.2f} <b>MSE:</b> {mse:,.0f} <b>r²:</b> {r2:.1f}%"
-        print("ERROR CHART ABOUT TO RUN")
         self.error_trend_chart()
-
-        print("SCATTER CHART ABOUT TO RUN")
         self.chart(title)
 
-    def run(self):
+    def run_thread(self):
         with ThreadPoolExecutor(max_workers=self.workers) as ex:
             for title, guess, truth, error, color in tqdm(
                 ex.map(self.run_datapoint, range(self.size)), total=self.size
@@ -221,8 +218,24 @@ class Tester:
                 self.errors.append(error)
                 self.colors.append(color)
                 print(f"{COLOR_MAP[color]}${error:.0f} ", end="")
+        clear_output(wait=True)
+        self.report()
+    
+    def run(self):
+        for i in tqdm(range(self.size)):
+            title, guess, truth, error, color = self.run_datapoint(i)
+            self.titles.append(title)
+            self.guesses.append(guess)
+            self.truths.append(truth)
+            self.errors.append(error)
+            self.colors.append(color)
+            print(f"{COLOR_MAP[color]}${error:.0f} ", end="")
+        clear_output(wait=True)
         self.report()
 
+
+def evaluate_thread(function, data, size=DEFAULT_SIZE, workers=WORKERS):
+    Tester(function, data, size=size, workers=workers).run_thread()
 
 def evaluate(function, data, size=DEFAULT_SIZE, workers=WORKERS):
     Tester(function, data, size=size, workers=workers).run()
