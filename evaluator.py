@@ -62,10 +62,12 @@ class Tester:
         datapoint = self.data[i]
         value = self.predictor(datapoint)
         guess = self.post_process(value)
-        truth = datapoint.price
+        truth = float(datapoint["completion"])
+        pieces = datapoint["prompt"].split("Game: ")
         error = abs(guess - truth)
         color = self.color_for(error, truth)
-        title = datapoint.name if len(datapoint.name) <= 40 else datapoint.name[:40] + "..."
+        title = pieces[1].split("\n")[0] if len(pieces) > 1 else pieces[0]
+        title = title if len(title) <= 40 else title[:40] + "..."
         return title, guess, truth, error, color
 
     def chart(self, title):
@@ -181,7 +183,6 @@ class Tester:
             )
         )
 
-        # Title with final stats
         final_mean = running_means[-1]
         final_ci = ci[-1]
         title = f"{self.title} Error: ${final_mean:,.2f} ± ${final_ci:,.2f}"
