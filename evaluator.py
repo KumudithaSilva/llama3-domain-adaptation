@@ -7,6 +7,7 @@ from itertools import accumulate
 import math
 from tqdm.notebook import tqdm
 from concurrent.futures import ThreadPoolExecutor
+from IPython.display import clear_output
 
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -217,6 +218,7 @@ class Tester:
                 self.errors.append(error)
                 self.colors.append(color)
                 print(f"{COLOR_MAP[color]}${error:.0f} ", end="")
+            clear_output(wait=True)
         self.report()
 
 
