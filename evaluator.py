@@ -7,7 +7,6 @@ from itertools import accumulate
 import math
 from tqdm.notebook import tqdm
 from concurrent.futures import ThreadPoolExecutor
-from IPython.display import clear_output
 
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -207,7 +206,7 @@ class Tester:
         self.error_trend_chart()
         self.chart(title)
 
-    def run_thread(self):
+    def run(self):
         with ThreadPoolExecutor(max_workers=self.workers) as ex:
             for title, guess, truth, error, color in tqdm(
                 ex.map(self.run_datapoint, range(self.size)), total=self.size
@@ -218,24 +217,8 @@ class Tester:
                 self.errors.append(error)
                 self.colors.append(color)
                 print(f"{COLOR_MAP[color]}${error:.0f} ", end="")
-        clear_output(wait=True)
-        self.report()
-    
-    def run(self):
-        for i in tqdm(range(self.size)):
-            title, guess, truth, error, color = self.run_datapoint(i)
-            self.titles.append(title)
-            self.guesses.append(guess)
-            self.truths.append(truth)
-            self.errors.append(error)
-            self.colors.append(color)
-            print(f"{COLOR_MAP[color]}${error:.0f} ", end="")
-        clear_output(wait=True)
         self.report()
 
-
-def evaluate_thread(function, data, size=DEFAULT_SIZE, workers=WORKERS):
-    Tester(function, data, size=size, workers=workers).run_thread()
 
 def evaluate(function, data, size=DEFAULT_SIZE, workers=WORKERS):
-    Tester(function, data, size=size, workers=workers).run()
+    Tester(function, data, size=size, workers=workers).run_()
