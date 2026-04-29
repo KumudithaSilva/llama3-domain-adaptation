@@ -221,4 +221,4 @@ class Tester:
 
 
 def evaluate(function, data, size=DEFAULT_SIZE, workers=WORKERS):
-    Tester(function, data, size=size, workers=workers).run_()
+    Tester(function, data, size=size, workers=workers).run()
