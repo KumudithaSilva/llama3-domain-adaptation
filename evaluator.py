@@ -204,7 +204,10 @@ class Tester:
         mse = mean_squared_error(self.truths, self.guesses)
         r2 = r2_score(self.truths, self.guesses) * 100
         title = f"{self.title} results<br><b>Error:</b> ${average_error:,.2f} <b>MSE:</b> {mse:,.0f} <b>r²:</b> {r2:.1f}%"
+        print("ERROR CHART ABOUT TO RUN")
         self.error_trend_chart()
+
+        print("SCATTER CHART ABOUT TO RUN")
         self.chart(title)
 
     def run(self):
