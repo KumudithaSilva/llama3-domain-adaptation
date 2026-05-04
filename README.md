@@ -252,7 +252,8 @@ $$
 - Performance improvements mainly come from increasing adaptation capacity rather than architectural changes. Given the dataset complexity, the achieved validation loss (~0.596) is a reasonable outcome.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/" width="500" />
+  <img src="https://github.com/user-attachments/assets/2c2d5f3d-4651-4be3-9ca9-b123f1971b9a" width="500" />
+  <img src="https://github.com/user-attachments/assets/a787d358-2ee4-4b16-a4b3-c4a4e7fde1b4" width="500" />
 </p>
 
 ## Future Enhancements
